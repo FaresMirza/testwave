@@ -9,20 +9,22 @@ spec:
 
   generators:
   - git:
-      repoURL: https://github.com/FaresMirza/testwave
-      revision: "main"
+      repoURL: https://github.com/FaresMirza/testwave   # your repo
+      revision: main
       files:
         - path: apps/wave-test/*/config.yaml
 
   strategy:
-    type: RollingSync
+    type: RollingSync   # ensures waves run in order, one by one
 
   template:
     metadata:
       name: "{{.app.name}}"
       annotations:
+        # Wave index comes from config.yaml (0,1,2,3…)
         argocd.argoproj.io/sync-wave: "{{.app.wave_index}}"
-        argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true,Sync=WaveSequential
+        # enforce strict ordering at sync time
+        argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true,Sync=WaveSequential,RespectResourceOrder=true
     spec:
       project: "{{.app.project}}"
       source:
@@ -38,3 +40,7 @@ spec:
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
+          - ApplyOutOfSyncOnly=true
+          - RespectResourceOrder=true
+          - Validate=true
+          - PruneLast=true

@@ -17,3 +17,11 @@ spec:
       - name: monitor
         image: busybox:1.36
         command: ["sh", "-c", "echo Monitor container running && tail -f /dev/null"]
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "echo ok"
+          initialDelaySeconds: 10
+          periodSeconds: 5
