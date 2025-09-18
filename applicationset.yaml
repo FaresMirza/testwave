@@ -17,8 +17,6 @@ spec:
       name: "{{.app.name}}"
       labels:
         app.kubernetes.io/instance: wave-test-apps
-      annotations:
-        argocd.argoproj.io/sync-wave: "{{.app.wave_index}}"   # <- wave index per app
     spec:
       project: "{{.app.project}}"
       source:
