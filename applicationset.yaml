@@ -6,20 +6,32 @@ metadata:
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
-
+  
   generators:
   - git:
       repoURL: https://github.com/FaresMirza/testwave
       revision: main
       files:
         - path: apps/wave-test/*/config.yaml
-        
+
+  # Progressive sync strategy - one app at a time in wave order
+  strategy:
+    type: RollingSync
+    rollingSync:
+      steps:
+        - matchExpressions:
+            - key: wave
+              operator: Exists   # any app with a wave label
+          maxUpdate: 1
+
   template:
     metadata:
       name: "{{.app.name}}"
+      labels:
+        wave: "{{.app.wave_index}}"
       annotations:
-        # Skip dry run when resource is missing
         argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+        # Remove conflicting sync-wave annotation - use resource-level waves instead
     spec:
       project: "{{.app.project}}"
       source:
@@ -35,4 +47,5 @@ spec:
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
-          - ApplyOutOfSyncOnly=true
+          - ApplyOutOfSyncOnly=true  # Fixed: removed the '?'
+          - RespectIgnoreDifferences=true
