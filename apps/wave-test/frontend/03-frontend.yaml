@@ -15,6 +15,10 @@ spec:
       labels:
         app: frontend
     spec:
+      initContainers:
+      - name: wait-before-start
+        image: busybox:1.36
+        command: ["sh", "-c", "echo '⏳ Waiting 10s before starting...' && sleep 10"]
       containers:
       - name: frontend
         image: nginx:alpine
