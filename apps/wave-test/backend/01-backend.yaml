@@ -3,8 +3,6 @@ kind: Deployment
 metadata:
   name: backend
   namespace: wave-test
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"   # backend = wave 1
 spec:
   replicas: 1
   selector:
@@ -16,7 +14,7 @@ spec:
         app: backend
     spec:
       initContainers:
-      - name: wait-before-star
+      - name: wait-before-start
         image: busybox:1.36
         command: ["sh", "-c", "echo '⏳ Waiting 10s before starting...' && sleep 10"]
       containers:
@@ -25,19 +23,11 @@ spec:
         command: ["sh", "-c", "echo Backend running && sleep 3600"]
         ports:
         - containerPort: 80
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: backend
-  namespace: wave-test
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
-spec:
-  selector:
-    app: backend
-  ports:
-  - port: 80
-    targetPort: 80
-
-    ##
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5   # wait 5s before first probe
+          periodSeconds: 5         # check every 5s
+          failureThreshold: 6      # fail after 30s if not ready
+          successThreshold: 1
