@@ -9,7 +9,7 @@ spec:
 
   generators:
   - git:
-      repoURL: https://github.com/FaresMirza/wave-test
+      repoURL: https://github.com/FaresMirza/testwave
       revision: "main"
       files:
         - path: apps/wave-test/*/config.yaml
