@@ -13,10 +13,14 @@ spec:
       labels:
         app: database
     spec:
+      initContainers:
+      - name: wave-delay
+        image: busybox:1.36
+        command: ["sh", "-c", "echo $(date) Database wave started && sleep 10"]
       containers:
       - name: postgres
         image: postgres:15
-        command: ["sh", "-c", "echo Database started && sleep 5"]
+        command: ["sh", "-c", "echo Database container running && sleep 3600"]
         env:
           - name: POSTGRES_PASSWORD
             value: "password"
@@ -32,4 +36,5 @@ spec:
   selector:
     app: database
   ports:
-    - port: 5432
+  - port: 5432
+    targetPort: 5432

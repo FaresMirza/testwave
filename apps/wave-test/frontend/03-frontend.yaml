@@ -13,29 +13,28 @@ spec:
       labels:
         app: frontend
     spec:
-      containers:
-      - name: frontend
-        image: nginx:alpine
-        apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: frontend
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: frontend
-  template:
-    metadata:
-      labels:
-        app: frontend
-    spec:
+      initContainers:
+      - name: wave-delay
+        image: busybox:1.36
+        command: ["sh", "-c", "echo $(date) Frontend wave started && sleep 10"]
       containers:
       - name: frontend
         image: busybox
-        command: ["sh", "-c", "echo Frontend started && sleep 5"]
+        command: ["sh", "-c", "echo Frontend container running && sleep 3600"]
         env:
           - name: BACKEND_URL
             value: "http://backend"
         ports:
         - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: wave-test
+spec:
+  selector:
+    app: frontend
+  ports:
+  - port: 80
+    targetPort: 80

@@ -13,10 +13,14 @@ spec:
       labels:
         app: backend
     spec:
+      initContainers:
+      - name: wave-delay
+        image: busybox:1.36
+        command: ["sh", "-c", "echo $(date) Backend wave started && sleep 10"]
       containers:
       - name: backend
         image: nginx:alpine
-	command: ["sh", "-c", "echo Backend started && sleep 5"]
+        command: ["sh", "-c", "echo Backend container running && sleep 3600"]
         ports:
         - containerPort: 80
 ---
@@ -29,4 +33,5 @@ spec:
   selector:
     app: backend
   ports:
-    - port: 80
+  - port: 80
+    targetPort: 80

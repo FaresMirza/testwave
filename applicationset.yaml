@@ -22,7 +22,7 @@ spec:
       name: "{{.app.name}}"
       annotations:
         argocd.argoproj.io/sync-wave: "{{.app.wave_index}}"
-        argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true,Sync=WaveSequential
+        argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true,Sync=WaveSequential, RespectResourceOrder=true
     spec:
       project: "{{.app.project}}"
       source:
