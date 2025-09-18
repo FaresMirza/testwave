@@ -16,9 +16,10 @@ spec:
       containers:
       - name: frontend
         image: nginx:alpine
+        command: ["sh", "-c", "echo Frontend running && sleep 3600"]
         env:
-          - name: BACKEND_URL
-            value: "http://backend"
+        - name: BACKEND_URL
+          value: "http://backend"
         ports:
         - containerPort: 80
         readinessProbe:
@@ -39,3 +40,20 @@ spec:
   ports:
   - port: 80
     targetPort: 80
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: frontend-postsync
+  namespace: wave-test
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: wait-frontend
+        image: busybox:1.36
+        command: ["sh", "-c", "echo '✅ Frontend PostSync done!' && sleep 5"]
