@@ -3,3 +3,4 @@ app:
   namespace: wave-test
   project: default
   wave_index: 3
+  path: apps/wave-test/frontend

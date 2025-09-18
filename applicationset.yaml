@@ -28,7 +28,7 @@ spec:
       source:
         repoURL: https://github.com/FaresMirza/wave-test
         targetRevision: main
-        path: "{{.path.path}}"
+        path: "{{.app.path}}"
       destination:
         server: https://kubernetes.default.svc
         namespace: "{{.app.namespace}}"
