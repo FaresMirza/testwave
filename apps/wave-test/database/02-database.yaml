@@ -16,6 +16,7 @@ spec:
       containers:
       - name: postgres
         image: postgres:15
+        command: ["sh", "-c", "echo Database started && sleep 5"]
         env:
           - name: POSTGRES_PASSWORD
             value: "password"

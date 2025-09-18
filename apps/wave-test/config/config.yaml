@@ -1,6 +1,0 @@
-app:
-  name: config
-  namespace: wave-test
-  project: default
-  wave_index: 0
-  path: apps/wave-test/config

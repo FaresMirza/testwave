@@ -16,6 +16,7 @@ spec:
       containers:
       - name: backend
         image: nginx:alpine
+	command: ["sh", "-c", "echo Backend started && sleep 5"]
         ports:
         - containerPort: 80
 ---
