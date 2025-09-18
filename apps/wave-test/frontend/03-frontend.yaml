@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: frontend
   namespace: wave-test
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"   # frontend comes after backend & database
 spec:
   replicas: 1
   selector:
@@ -13,17 +15,13 @@ spec:
       labels:
         app: frontend
     spec:
-      initContainers:
-      - name: wave-delay
-        image: busybox:1.36
-        command: ["sh", "-c", "echo $(date) Frontend wave started && sleep 30"]
       containers:
       - name: frontend
         image: nginx:alpine
         command: ["sh", "-c", "echo Frontend container running && sleep 3600"]
         env:
-          - name: BACKEND_URL
-            value: "http://backend"
+        - name: BACKEND_URL
+          value: "http://backend"
         ports:
         - containerPort: 80
 ---
@@ -32,6 +30,8 @@ kind: Service
 metadata:
   name: frontend
   namespace: wave-test
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   selector:
     app: frontend

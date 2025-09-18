@@ -5,24 +5,20 @@ metadata:
   namespace: argocd
 spec:
   goTemplate: true
-  goTemplateOptions: ["missingkey=error"]
-
   generators:
   - git:
       repoURL: https://github.com/FaresMirza/testwave
-      revision: "main"
+      revision: main
       files:
         - path: apps/wave-test/*/config.yaml
-
-  strategy:
-    type: RollingSync
 
   template:
     metadata:
       name: "{{.app.name}}"
+      labels:
+        app.kubernetes.io/instance: wave-test-apps
       annotations:
-        argocd.argoproj.io/sync-wave: "{{.app.wave_index}}"
-        argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true,Sync=WaveSequential, RespectResourceOrder=true
+        argocd.argoproj.io/sync-wave: "{{.app.wave_index}}"   # <- wave index per app
     spec:
       project: "{{.app.project}}"
       source:

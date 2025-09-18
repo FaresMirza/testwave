@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: database
   namespace: wave-test
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"   # database = wave 2
 spec:
   replicas: 1
   selector:
@@ -16,7 +18,7 @@ spec:
       containers:
       - name: postgres
         image: postgres:15
-        command: ["sh", "-c", "echo Database container running && sleep 3600"]
+        command: ["sh", "-c", "echo Database running && sleep 3600"]
         env:
           - name: POSTGRES_PASSWORD
             value: "password"
@@ -28,6 +30,8 @@ kind: Service
 metadata:
   name: database
   namespace: wave-test
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   selector:
     app: database
