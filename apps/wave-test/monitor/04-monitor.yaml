@@ -16,12 +16,12 @@ spec:
       containers:
       - name: monitor
         image: busybox:1.36
-        command: ["sh", "-c", "echo Monitor container running && tail -f /dev/null"]
+        command: ["sh", "-c", "echo Monitor running && sleep 3600"]
         readinessProbe:
           exec:
             command:
-            - sh
-            - -c
-            - "echo ok"
-          initialDelaySeconds: 10
+              - sh
+              - -c
+              - "echo ok"
+          initialDelaySeconds: 5
           periodSeconds: 5

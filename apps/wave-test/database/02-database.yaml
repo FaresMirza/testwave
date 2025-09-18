@@ -16,7 +16,6 @@ spec:
       containers:
       - name: postgres
         image: postgres:15
-        command: ["sh", "-c", "echo Database container running && sleep 3600"]
         env:
           - name: POSTGRES_PASSWORD
             value: "password"
@@ -25,7 +24,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 5432
-          initialDelaySeconds: 10   # wait before first check
+          initialDelaySeconds: 10
           periodSeconds: 5
 ---
 apiVersion: v1
