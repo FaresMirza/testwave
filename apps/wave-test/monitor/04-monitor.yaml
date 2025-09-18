@@ -20,25 +20,8 @@ spec:
         readinessProbe:
           exec:
             command:
-            - sh
-            - -c
-            - "echo ok"
+              - sh
+              - -c
+              - "echo ok"
           initialDelaySeconds: 10
           periodSeconds: 5
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: monitor-postsync
-  namespace: wave-test
-  annotations:
-    argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
-spec:
-  template:
-    spec:
-      restartPolicy: Never
-      containers:
-      - name: wait-monitor
-        image: busybox:1.36
-        command: ["sh", "-c", "echo '✅ Monitor PostSync done!' && sleep 5"]
