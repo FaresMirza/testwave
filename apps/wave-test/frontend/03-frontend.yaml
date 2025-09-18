@@ -19,7 +19,7 @@ spec:
         command: ["sh", "-c", "echo $(date) Frontend wave started && sleep 30"]
       containers:
       - name: frontend
-        image: busybox
+        image: nginx:alpine
         command: ["sh", "-c", "echo Frontend container running && sleep 3600"]
         env:
           - name: BACKEND_URL
