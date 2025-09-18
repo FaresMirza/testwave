@@ -16,7 +16,7 @@ spec:
       initContainers:
       - name: wave-delay
         image: busybox:1.36
-        command: ["sh", "-c", "echo $(date) Database wave started && sleep 10"]
+        command: ["sh", "-c", "echo $(date) Database wave started && sleep 20"]
       containers:
       - name: postgres
         image: postgres:15
