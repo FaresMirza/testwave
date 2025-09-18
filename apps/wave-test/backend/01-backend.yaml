@@ -17,7 +17,7 @@ spec:
         app: backend
     spec:
       initContainers:
-      - name: wait-before-start
+      - name: wait-before-star
         image: busybox:1.36
         command: ["sh", "-c", "echo '⏳ Waiting 10s before starting...' && sleep 10"]
       containers:

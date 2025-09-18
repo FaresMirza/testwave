@@ -48,4 +48,4 @@ spec:
         syncOptions:
           - CreateNamespace=true
           - ApplyOutOfSyncOnly=true  # Fixed: removed the '?'
-          - RespectIgnoreDifferences=true
+          - RespectResourceHealth=true
