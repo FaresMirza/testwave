@@ -16,4 +16,4 @@ spec:
       containers:
       - name: monitor
         image: busybox:1.36
-        command: ["sh","-c","echo Monitoring started && sleep 3600"]
+        command: ["sh","-c","echo Monitoring started && sleep 5"]
