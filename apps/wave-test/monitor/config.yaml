@@ -1,0 +1,5 @@
+app:
+  name: monitor
+  namespace: wave-test
+  project: default
+  wave_index: 4

@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: wave-test-apps
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+
+  generators:
+  - git:
+      repoURL: https://github.com/FaresMirza/wave-test
+      revision: "main"
+      files:
+        - path: apps/wave-test/*/config.yaml
+
+  strategy:
+    type: RollingSync
+
+  template:
+    metadata:
+      name: "{{.app.name}}"
+      annotations:
+        argocd.argoproj.io/sync-wave: "{{.app.wave_index}}"
+        argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true,Sync=WaveSequential
+    spec:
+      project: "{{.app.project}}"
+      source:
+        repoURL: https://github.com/FaresMirza/wave-test
+        targetRevision: main
+        path: "{{.path.path}}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{.app.namespace}}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

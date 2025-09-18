@@ -1,0 +1,5 @@
+app:
+  name: database
+  namespace: wave-test
+  project: default
+  wave_index: 2
