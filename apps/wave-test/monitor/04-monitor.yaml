@@ -16,7 +16,7 @@ spec:
       initContainers:
       - name: wave-delay
         image: busybox:1.36
-        command: ["sh", "-c", "echo $(date) Monitor wave started && sleep 10"]
+        command: ["sh", "-c", "echo $(date) Monitor wave started && sleep 40"]
       containers:
       - name: monitor
         image: busybox:1.36
