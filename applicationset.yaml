@@ -14,14 +14,30 @@ spec:
       files:
         - path: apps/wave-test/*/config.yaml
 
-  # Progressive sync strategy - one app at a time in wave order
+  # Progressive sync strategy - strict order, one wave at a time
   strategy:
     type: RollingSync
     rollingSync:
       steps:
         - matchExpressions:
             - key: wave
-              operator: Exists   # any app with a wave label
+              operator: In
+              values: ["1"]   # Database
+          maxUpdate: 1
+        - matchExpressions:
+            - key: wave
+              operator: In
+              values: ["2"]   # Backend
+          maxUpdate: 1
+        - matchExpressions:
+            - key: wave
+              operator: In
+              values: ["3"]   # Frontend
+          maxUpdate: 1
+        - matchExpressions:
+            - key: wave
+              operator: In
+              values: ["4"]   # Monitor
           maxUpdate: 1
 
   template:
@@ -31,7 +47,6 @@ spec:
         wave: "{{.app.wave_index}}"
       annotations:
         argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-        # Remove conflicting sync-wave annotation - use resource-level waves instead
     spec:
       project: "{{.app.project}}"
       source:
@@ -47,5 +62,5 @@ spec:
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
-          - ApplyOutOfSyncOnly=true  # Fixed: removed the '?'
+          - ApplyOutOfSyncOnly=true
           - RespectResourceHealth=true
