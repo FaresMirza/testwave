@@ -5,7 +5,6 @@ metadata:
   namespace: wave-test
   labels:
     app: backend
-    wave: "1"   # wave index
 spec:
   replicas: 1
   selector:
@@ -47,3 +46,23 @@ spec:
   ports:
   - port: 80
     targetPort: 80
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: wait-for-backend-deps
+  namespace: wave-test
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: curl
+        image: curlimages/curl
+        command: ["sh", "-c", "curl -sf http://database:5432 || exit 1"]
+      restartPolicy: Never
+  backoffLimit: 3
