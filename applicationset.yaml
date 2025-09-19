@@ -6,7 +6,7 @@ metadata:
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
-  
+
   generators:
   - git:
       repoURL: https://github.com/FaresMirza/testwave
@@ -14,7 +14,6 @@ spec:
       files:
         - path: apps/wave-test/*/config.yaml
 
-  # Progressive sync strategy - strict order, one wave at a time
   strategy:
     type: RollingSync
     rollingSync:
@@ -22,22 +21,22 @@ spec:
         - matchExpressions:
             - key: wave
               operator: In
-              values: ["1"]   # Database
+              values: ["1"]
           maxUpdate: 1
         - matchExpressions:
             - key: wave
               operator: In
-              values: ["2"]   # Backend
+              values: ["2"]
           maxUpdate: 1
         - matchExpressions:
             - key: wave
               operator: In
-              values: ["3"]   # Frontend
+              values: ["3"]
           maxUpdate: 1
         - matchExpressions:
             - key: wave
               operator: In
-              values: ["4"]   # Monitor
+              values: ["4"]
           maxUpdate: 1
 
   template:
@@ -47,6 +46,7 @@ spec:
         wave: "{{.app.wave_index}}"
       annotations:
         argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+        argocd.argoproj.io/sync-wave: "{{.app.wave_index}}"   # 👈 propagate here
     spec:
       project: "{{.app.project}}"
       source:
