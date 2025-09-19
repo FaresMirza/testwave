@@ -13,10 +13,6 @@ spec:
       labels:
         app: database
     spec:
-      initContainers:
-      - name: wait-before-sta
-        image: busybox:1.36
-        command: ["sh", "-c", "echo '⏳ Waiting 10s before starting...' && sleep 10"]
       containers:
       - name: postgress
         image: postgres:15
