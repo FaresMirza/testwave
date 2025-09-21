@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: postgres
-        image: postgres:15
+        image: invalidimage:doesnotexist
         env:
         - name: POSTGRES_USER
           value: "postgres"
