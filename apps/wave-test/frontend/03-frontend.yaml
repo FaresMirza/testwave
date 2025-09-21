@@ -16,7 +16,7 @@ spec:
         app: frontend
     spec:
       containers:
-      - name: frontend
+      - name: fronten
         image: nginx:alpine
         command: ["sh", "-c", "echo Frontend running && sleep 3600"]
         env:
